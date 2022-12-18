@@ -1,8 +1,8 @@
-# Project compile file, executable
+# Project Compile file, Static Lib
 CC = g++
-CXXFLAGS = -Wall -I../util/include -L../
-LDFLAGS = -lutil
-INSTALLDIR =/usr/local/bin
+CXXFLAGS = -Wall -I./include
+LDFLAGS =
+INSTALLDIR =/usr/local/lib
 APPNAME = "APPNAME"
 
 ifndef config
@@ -18,7 +18,7 @@ else ifeq ($(config),release)
 	CXXFLAGS += -s
 endif
 
-BIN = ../$(APPNAME)
+BIN = ../lib$(APPNAME).a
 OBJDIR = ../obj/$(APPNAME)
 SRCDIR = src
 
@@ -28,8 +28,9 @@ DEP = $(OBJ:$(OBJDIR)/%.o=%.d)
 
 all: $(BIN)
 
+#FINAL LINK STEP
 $(BIN): $(OBJ)
-	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+	ar rcs $@ $^
 
 %.d: $(SRCDIR)/%.cpp
 	@$(CPP) $(CFLAGS) $< -MM -MT $(@:%.d=$(OBJDIR)/%.o) >$@

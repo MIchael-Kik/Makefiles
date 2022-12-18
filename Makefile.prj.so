@@ -1,8 +1,8 @@
-# Project compile file, executable
+# Project Compiler, shared lib
 CC = g++
-CXXFLAGS = -Wall -I../util/include -L../
-LDFLAGS = -lutil
-INSTALLDIR =/usr/local/bin
+CXXFLAGS = -Wall -I./include
+LDFLAGS =
+INSTALLDIR =/usr/local/lib
 APPNAME = "APPNAME"
 
 ifndef config
@@ -18,7 +18,7 @@ else ifeq ($(config),release)
 	CXXFLAGS += -s
 endif
 
-BIN = ../$(APPNAME)
+BIN = ../lib$(APPNAME).so
 OBJDIR = ../obj/$(APPNAME)
 SRCDIR = src
 
@@ -28,8 +28,9 @@ DEP = $(OBJ:$(OBJDIR)/%.o=%.d)
 
 all: $(BIN)
 
+#FINAL LINK STEP
 $(BIN): $(OBJ)
-	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CC) $(CXXFLAGS) -fPIC -shared -o $@ $^ $(LDFLAGS)	
 
 %.d: $(SRCDIR)/%.cpp
 	@$(CPP) $(CFLAGS) $< -MM -MT $(@:%.d=$(OBJDIR)/%.o) >$@
@@ -43,8 +44,8 @@ uninstall:
 	rm -f $(INSTALLDIR)/$(APPNAME)
 
 install: all
-	cp -f $(BIN) $(INSTALLDIR)/$(APPNAME)
-	chmod 755 $(INSTALLDIR)/$(APPNAME)
+	cp -f $(BIN) $(INSTALLDIR)/lib$(APPNAME).so
+	chmod 755 $(INSTALLDIR)/lib$(APPNAME).so
 
 clean:
 	rm -f $(OBJ) $(DEP) $(BIN)	

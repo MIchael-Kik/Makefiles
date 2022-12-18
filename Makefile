@@ -1,20 +1,35 @@
-PROJECTS := "APPNAME" 
+# Workspace Makefile, add all projects
+ifndef config
+	config = debug
+endif
 
-.PHONY: all clean $(PROJECTS) uninstall install cleand
+# For Every project directory add a new variable with the
+# Name_config to configure
+
+ifeq ($(config),release)
+	"APPNAME"_config = release
+else ifeq ($(config),optimize)
+	"APPNAME"_config = optimize
+else ifeq ($(config),debug)
+	"APPNAME"_config = debug
+endif	
+
+#Add All project names
+PROJECTS := 
+
+.PHONY: all clean $(PROJECTS) uninstall install clean
 
 all: $(PROJECTS)
+# add static and shared libs before
 
-"APPNAME":
-	@$(MAKE) --no-print-directory -C $@ -f Makefile
+"APPNAME": 
+	@echo "==== Building ($@) ($("APPNAME"_config)) ===="
+	@$(MAKE) --no-print-directory -C $@ -f Makefile config=$("APPNAME"_config)
 
-uninstall:
-	@$(MAKE) --no-print-directory -C "APPNAME" -f Makefile uninstall
+# Rule name should be same as directrory
 
-install:
-	@$(MAKE) --no-print-directory -C "APPNAME" -f Makefile install
+#add Extra rules with the same format
 
+# add for every project
 clean:
-	@$(MAKE) --no-print-directory -C "APPNAME" -f Makefile clean
-
-cleand:
-	@$(MAKE) --no-print-directory -C "APPNAME" -f Makefile clenad
+	@${MAKE} --no-print-directory -C "APPNAME" -f Makefile clean
