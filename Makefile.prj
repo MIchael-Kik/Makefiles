@@ -16,6 +16,7 @@ else ifeq ($(config),optimize)
 else ifeq ($(config),release)
 	CXXFLAGS += -O3
 	CXXFLAGS += -s
+	CXXFLAGS += -NDEBUG
 endif
 
 BIN = ../$(APPNAME)
