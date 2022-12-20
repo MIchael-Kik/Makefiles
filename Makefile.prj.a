@@ -1,5 +1,5 @@
 # Project Compile file, Static Lib
-CC = g++
+CXX = g++
 CXXFLAGS = -Wall -I./include
 LDFLAGS =
 INSTALLDIR =/usr/local/lib
@@ -38,7 +38,7 @@ $(BIN): $(OBJ)
 -include $(DEP)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
-	$(CC) $(CXXFLAGS) -o $@ -c $<
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 uninstall:
 	rm -f $(INSTALLDIR)/$(APPNAME)

@@ -1,7 +1,7 @@
 # Project compile file, executable
-CC = g++
-CXXFLAGS = -Wall -I../util/include -L../
-LDFLAGS = -lutil
+CXX = g++
+CXXFLAGS = -Wall -I./include 
+LDFLAGS = 
 INSTALLDIR =/usr/local/bin
 APPNAME = "APPNAME"
 
@@ -30,7 +30,7 @@ DEP = $(OBJ:$(OBJDIR)/%.o=%.d)
 all: $(BIN)
 
 $(BIN): $(OBJ)
-	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 %.d: $(SRCDIR)/%.cpp
 	@$(CPP) $(CFLAGS) $< -MM -MT $(@:%.d=$(OBJDIR)/%.o) >$@
@@ -38,7 +38,7 @@ $(BIN): $(OBJ)
 -include $(DEP)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
-	$(CC) $(CXXFLAGS) -o $@ -c $<
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 uninstall:
 	rm -f $(INSTALLDIR)/$(APPNAME)
